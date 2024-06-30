@@ -1,0 +1,201 @@
+#:kivy
+#:set R "#F94A69"
+#:set G "#8bc34a"
+#:set Y "#ffc400"
+#:set B "#03a9f4"
+
+# หน้าเมนู
+<MenuScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        #รูป
+        Image:
+            source: "./image/sudoku-logo.png"
+            size_hint_y:2
+        # ปุ่มต่าง ๆ
+        Button:
+            text:'easy level'
+            font_size: 25
+            font_name:"Comic"
+            on_press: root.manager.current = 'easy'
+            background_color:COLOR(G)
+
+        Button:
+            text:'medium level'
+            font_size: 25
+            font_name:"Comic"
+            on_press: root.manager.current = 'medium'
+            background_color:COLOR(Y)
+        Button:
+            text:'hard level'
+            font_size: 25
+            font_name:"Comic"
+            on_press: root.manager.current = 'hard'
+            background_color:COLOR(R)
+        Button:
+            text:'Quit'
+            font_size: 25
+            font_name:"Comic"
+            on_press: app.stop()
+
+# หน้า easy level
+<SudokuScreen1>:
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    # สร้างตาราง
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        GridLayout:
+            id: grid
+            rows: 9
+            cols: 9
+            line_size: 6
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Rectangle:
+                    pos: self.x + self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x + 2 * self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x, self.y  + self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+                Rectangle:
+                    pos: self.x, self.y  + 2 * self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+        # ปุ่มต่าง ๆ 
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 0.1
+            Button:
+                text: "Solve"
+                font_name:"Comic"
+                on_press: root.solve()
+                background_color:COLOR(B)
+                font_size: 17
+            Button:
+                text: "Back"
+                font_name:"Comic"
+                on_press: root.manager.current = 'menu'
+                background_color:COLOR(B)
+                font_size: 17
+
+# หน้า medium level
+<SudokuScreen2>:
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        GridLayout:
+            id: grid
+            rows: 9
+            cols: 9
+            line_size: 6
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Rectangle:
+                    pos: self.x + self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x + 2 * self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x, self.y  + self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+                Rectangle:
+                    pos: self.x, self.y  + 2 * self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 0.1
+            Button:
+                text: "Solve"
+                on_press: root.solve()
+                background_color:COLOR(B)
+                font_size: 17
+            Button:
+                text: "Back"
+                on_press: root.manager.current = 'menu'
+                background_color:COLOR(B)
+                font_size: 17
+
+# หน้า hard level
+<SudokuScreen3>:
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        GridLayout:
+            id: grid
+            rows: 9
+            cols: 9
+            line_size: 6
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Rectangle:
+                    pos: self.x + self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x + 2 * self.width / 3 - self.line_size / 2, self.y
+                    size: self.line_size, self.height
+                Rectangle:
+                    pos: self.x, self.y  + self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+                Rectangle:
+                    pos: self.x, self.y  + 2 * self.height / 3 - self.line_size / 2
+                    size: self.width, self.line_size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 0.1
+            Button:
+                text: "Solve"
+                on_press: root.solve()
+                background_color:COLOR(B)
+                font_size: 17
+            Button:
+                text: "Back"
+                on_press: root.manager.current = 'menu'
+                background_color:COLOR(B)
+                font_size: 17
+
+# ข้อความและช่อง
+<SudokuCell>:
+    text: ""
+    font_size: 0.7 * self.width
+    padding: 0.3 * self.width, (self.height - self.line_height) / 2
+    input_filter: lambda text, from_undo: text if ( text.isdigit() and len(self.text) == 0 and 0 < int(text) < 10 ) else ""
+    multiline: False
+    cursor_color: [0, 0, 0, 0]
+
+# กรอบขึ้นเตือนเมื่อผิด หรือ เฉลยไม่ได้
+<ErrorMessage>:
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    text: "Incorrect"
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    size_hint: 0.3, 0.1
+    color: 1, 0, 0, 1
+    bold: True
